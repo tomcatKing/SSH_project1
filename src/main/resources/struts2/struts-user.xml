@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+	<package name="userPackage" extends="json-default" namespace="/user">
+		<interceptors>
+			<interceptor name="ajaxInterceptor" class="ajaxInterceptor"/>
+			<interceptor name="exceptionInterceptor" class="exceptionInterceptor"/>
+	 		<interceptor-stack name="myStack">
+	 			<interceptor-ref name="ajaxInterceptor"/>
+	 			<interceptor-ref name="exceptionInterceptor"/>
+	 			<interceptor-ref name="defaultStack"/>	
+	 		</interceptor-stack>
+	 	</interceptors>
+		
+		<!-- 定义全局拦截器 -->
+		<default-interceptor-ref name="myStack"/>
+		
+		<global-results>
+	 		<result type="json">
+	 			<param name="root">jsonResult</param>
+	 			<param name="excludeNullProperties">true</param>
+	 		</result>
+	 		<result name="exception">
+	 			<param name="root">errorResult</param>
+	 			<param name="excludeNullProperties">true</param>
+	 		</result>
+	 		<result name="null">
+	 			<param name="root">errorResult</param>
+	 			<param name="excludeNullProperties">true</param>
+	 		</result>
+	 	</global-results>
+	 	
+	 	<!-- 判断用户名是否被使用(String userName) -->
+		<action name="containUserName" class="userController" method="containUserName">
+		</action>
+		
+		<!-- 通过用户名获取验证码(String userName) -->
+		<action name="getCodeByUserName" class="userController" method="getCodeByUserName">
+		</action>
+		
+		<!-- 通过邮箱获取验证码(String userEmail) -->
+		<action name="getCodeByUserEmail" class="userController" method="getCodeByUserEmail">
+		</action>
+		
+		<!-- 登录(String userName,String code) -->
+		<action name="login" class="userController" method="login">
+		</action>
+		
+		<!-- 用户退出 -->
+		<action name="logout" class="userController" method="logout">
+		</action>
+		
+		<!-- 检查邮箱是否可使用 (String userEmail)-->
+		<action name="containUserEmail" class="userController" method="containUserEmail">
+		</action>
+		
+		<!-- 用户注册 (Strubg userName,String userEmail,String code)-->
+		<action name="regist" class="userController" method="regist">
+		</action>
+		
+		<!-- 用户更改邮箱 (String userName,String oldEmail,String newEmail,String code)-->
+		<action name="update" class="userController" method="update">
+		</action>
+		
+		<!-- 获取当前登录的用户的信息 -->
+		<action name="info" class="userController" method="info">
+		</action>
+		
+	</package>
+</struts>

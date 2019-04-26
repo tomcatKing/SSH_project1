@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+	<package name="orderPackage" extends="json-default" namespace="/order">
+		<interceptors>
+			<interceptor name="ajaxInterceptor" class="ajaxInterceptor"/>
+			<interceptor name="exceptionInterceptor" class="exceptionInterceptor"/>
+	 		<interceptor name="userInterceptor" class="userInterceptor"/>
+	 		<interceptor-stack name="myStack">
+	 			<interceptor-ref name="ajaxInterceptor"/>
+	 			<interceptor-ref name="exceptionInterceptor"/>
+	 			<interceptor-ref name="userInterceptor"/>
+	 			<interceptor-ref name="defaultStack"/>	
+	 		</interceptor-stack>
+	 	</interceptors>
+		
+		<!-- 定义全局拦截器 -->
+		<default-interceptor-ref name="myStack"/>
+		
+		<global-results>
+	 		<result type="json">
+	 			<param name="root">jsonResult</param>
+	 			<param name="excludeNullProperties">true</param>
+	 		</result>
+	 		<result name="exception">
+	 			<param name="root">errorResult</param>
+	 			<param name="excludeNullProperties">true</param>
+	 		</result>
+	 		<result name="null">
+	 			<param name="root">errorResult</param>
+	 			<param name="excludeNullProperties">true</param>
+	 		</result>
+	 	</global-results>
+		
+		<!-- 创建订单-->
+		<action name="add" class="orderController" method="createOrder">
+		</action>
+		
+		<!-- 取消订单(Long orderNo)-->
+		<action name="cancel" class="orderController" method="cancel">
+		</action>
+		
+		<!-- 列出订单(Integer pageNum,Integer pageSize)-->
+		<action name="list" class="orderController" method="list">
+		</action>
+		
+		<!-- 支付订单(Long orderNo)-->
+		<action name="pay" class="orderController" method="pay">
+		</action>
+		
+		<!-- 支付宝异步回调-->
+		<action name="ali_notify" class="orderController" method="ali_notify">
+		</action>
+		
+		<!-- 支付宝同步回调 -->
+		<action name="ali_return" class="orderController" method="ali_returnfy">
+		</action>
+		
+		<!-- 显示用户的所有未支付订单 
+			(Integer userId,Integer pageNum,Integer pageSize)
+		-->
+		<action name="nopay" class="orderController" method="nopay">
+		</action>
+		
+		<!-- 显示用户的已支付订单
+			(Integer userId,Integer pageNum,Integer pageSize)
+		 -->
+		<action name="ispay" class="orderController" method="ispay">
+		</action>
+		
+		<!-- 显示用户的已完成订单
+			(Integer userId,Integer pageNum,Integer pageSize)
+		 -->
+		<action name="success" class="orderController" method="success">
+		</action>
+		
+		<!-- 显示用户的具体订单详情 -->
+		<action name="detail" class="orderController" method="orderDetail">
+		</action>
+		
+		<!-- 获取订单状态 -->
+		<action name="status" class="orderController" method="orderStatus">
+		</action>
+	</package>
+</struts>

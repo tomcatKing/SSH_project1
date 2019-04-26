@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd">
+	
+	<context:property-placeholder location="classpath:datasource.properties"/>
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${db.driverClassName}"/>
+		<property name="url" value="${db.url}"/>
+		<property name="username" value="${db.username}"/>
+		<property name="password" value="${db.password}"/>
+		<property name="initialSize" value="${db.initNum}"/>
+	</bean>
+	
+ 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+ 		<property name="dataSource" ref="dataSource"/>
+ 		<property name="packagesToScan" value="com.mt.pojo"/>
+ 		<property name="hibernateProperties">
+ 			<value>
+	 			hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+	 			hibernate.hbm2ddl.auto=update
+	 			hibernate.show_sql=true
+	 			hibernate.format_sql=true
+ 			</value>
+ 		</property>
+ 	</bean>
+ 	
+ 	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+ 		<property name="sessionFactory" ref="sessionFactory"/>
+ 	</bean>
+ 	
+ 	<!-- 开启注解事务 -->
+ 	<tx:annotation-driven transaction-manager="transactionManager"/>
+</beans>

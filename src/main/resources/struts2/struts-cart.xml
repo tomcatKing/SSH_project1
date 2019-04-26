@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+	<package name="cartPackage" extends="json-default" namespace="/cart">
+		<interceptors>
+			<interceptor name="ajaxInterceptor" class="ajaxInterceptor"/>
+			<interceptor name="exceptionInterceptor" class="exceptionInterceptor"/>
+	 		<interceptor name="userInterceptor" class="userInterceptor"/>
+	 		<interceptor-stack name="myStack">
+	 			<interceptor-ref name="ajaxInterceptor"/>
+	 			<interceptor-ref name="exceptionInterceptor"/>
+	 			<interceptor-ref name="userInterceptor"/>
+	 			<interceptor-ref name="defaultStack"/>	
+	 		</interceptor-stack>
+	 	</interceptors>
+		
+		<!-- 定义全局拦截器 -->
+		<default-interceptor-ref name="myStack"/>
+		
+		<global-results>
+	 		<result type="json">
+	 			<param name="root">jsonResult</param>
+	 			<param name="excludeNullProperties">true</param>
+	 		</result>
+	 		<result name="exception">
+	 			<param name="root">errorResult</param>
+	 			<param name="excludeNullProperties">true</param>
+	 		</result>
+	 		<result name="null">
+	 			<param name="root">errorResult</param>
+	 			<param name="excludeNullProperties">true</param>
+	 		</result>
+	 	</global-results>
+	 	
+	 	<!-- 获取所有的食物列表(Integer pageNum,Integer pageSize) -->
+		<action name="list" class="cartController" method="list">
+		</action>
+		
+		<!-- 添加美食到购物车(Integer foodId,Integer foodNum) -->
+		<action name="add" class="cartController" method="add">
+		</action>
+		
+		<!-- 删除购物车(Integer cartId) -->
+		<action name="remove" class="cartController" method="remove">
+		</action>
+		
+		<!-- 更新购物车(Integer cartId,Integer foodNum) -->
+		<action name="update" class="cartController" method="update">
+		</action>
+		
+	</package>
+</struts>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+	<!-- 禁止使用动态方法调用 -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<!-- 测试模式 -->
+	<constant name="struts.devMode" value="true" />
+	<!-- 设置文件上传的大小为5M以内 -->
+	<constant name="struts.multipart.maxSize" value="5242880"/>
+	
+	<!-- 导入食物的struts.xml文件 -->
+  	<include file="struts2/struts-food.xml" />
+  	
+  	<!-- 导入购物车的struts.xml文件 -->
+  	<include file="struts2/struts-cart.xml" />
+  	
+  	<!-- 导入房间的struts.xml文件 -->
+  	<include file="struts2/struts-room.xml" />
+  	
+  	<!-- 导入用户的struts.xml文件 -->
+  	<include file="struts2/struts-user.xml" />
+  	
+  	<!-- 导入订单的struts.xml文件 -->
+  	<include file="struts2/struts-order.xml" />
+  	
+</struts>

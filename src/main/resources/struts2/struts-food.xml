@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+	<package name="foodPackage" extends="json-default" namespace="/food">
+		<interceptors>
+			<interceptor name="ajaxInterceptor" class="ajaxInterceptor"/>
+			<interceptor name="exceptionInterceptor" class="exceptionInterceptor"/>
+	 		<interceptor-stack name="myStack">
+	 			<interceptor-ref name="ajaxInterceptor"/>
+	 			<interceptor-ref name="exceptionInterceptor"/>
+	 			<interceptor-ref name="defaultStack"/>	
+	 		</interceptor-stack>
+	 	</interceptors>
+		
+		<!-- 定义全局拦截器 -->
+		<default-interceptor-ref name="myStack"/>
+		
+		<global-results>
+	 		<result type="json">
+	 			<param name="root">jsonResult</param>
+	 			<param name="excludeNullProperties">true</param>
+	 		</result>
+	 		<result name="exception">
+	 			<param name="root">errorResult</param>
+	 			<param name="excludeNullProperties">true</param>
+	 		</result>
+	 		<result name="null">
+	 			<param name="root">errorResult</param>
+	 			<param name="excludeNullProperties">true</param>
+	 		</result>
+	 	</global-results>
+	 	
+	 	<!-- 
+	 	获取所有的食物列表
+	 	Integer pageNum,Integer pageSize,String keyword,
+	 	String orderBy,String foodTypes	
+	 	 -->
+		<action name="list" class="foodController" method="list">
+		</action>
+		
+		<!-- 获取指定的食物详情(Integer foodId)-->
+		<action name="detail" class="foodController" method="detail">
+		</action>
+		
+	</package>
+</struts>

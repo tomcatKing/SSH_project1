@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+	<package name="roomPackage" extends="json-default" namespace="/room">
+		<interceptors>
+			<interceptor name="ajaxInterceptor" class="ajaxInterceptor"/>
+			<interceptor name="exceptionInterceptor" class="exceptionInterceptor"/>
+	 		<interceptor-stack name="myStack">
+	 			<interceptor-ref name="ajaxInterceptor"/>
+	 			<interceptor-ref name="exceptionInterceptor"/>
+	 			<interceptor-ref name="defaultStack"/>	
+	 		</interceptor-stack>
+	 	</interceptors>
+		
+		<!-- 定义全局拦截器 -->
+		<default-interceptor-ref name="myStack"/>
+		
+		<global-results>
+	 		<result type="json">
+	 			<param name="root">jsonResult</param>
+	 			<param name="excludeNullProperties">true</param>
+	 		</result>
+	 		<result name="exception">
+	 			<param name="root">errorResult</param>
+	 			<param name="excludeNullProperties">true</param>
+	 		</result>
+	 		<result name="null">
+	 			<param name="root">errorResult</param>
+	 			<param name="excludeNullProperties">true</param>
+	 		</result>
+	 	</global-results>
+	 	
+	 	<!-- 获取可以使用的房间(int pageNum,int pageSize) -->
+		<action name="list" class="roomController" method="list">
+		</action>
+		
+		<!-- 添加房间(Integer roomId) -->
+		<action name="add" class="roomController" method="add">
+		</action>
+		
+		<!-- 取消房间 -->
+		<action name="cancel" class="roomController" method="cancel">
+		</action>
+		
+		<!-- 获取房间详情 -->
+		<action name="roomvo" class="roomController" method="roomVo">
+		</action>
+		
+	</package>
+</struts>
