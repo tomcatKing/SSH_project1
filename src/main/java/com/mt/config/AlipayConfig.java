@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 
 public class AlipayConfig {
-	private static final String prefix_url="http://izf4gj.natappfree.cc/";
+	private static final String prefix_url="http://ssh.tomcatBbzzzs.cn/";
 //↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 	// 应用ID,您的APPID，收款账号既是您的APPID对应支付宝账号
@@ -27,10 +27,10 @@ public class AlipayConfig {
     public static String alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAq9Ku6V3XPya5EgEimds8L2RLH9OdLPtgl0KZlor9vbOhEvgT4lCXbk8tk2CoMGTP6N3BNrs0l7NugsJ/2TJVMWhxNqwmL7AEVHpR3aFwBBf1qOrZvKtdkiEok5g3QN2oZ+1hyyIyo0CUJWzZJ/L2Dzuj6+C7yYpAbbbpljeg335+eqyhkttrdAQax34MZ+SJfw+VUnvsLwVJQNFVhUx+kUaOnZtY95WQUCjg+KLtc18R8D9C0ObzBTNpAEeZra1RO7swtFCixRsm/anyB2LlMsc7wzgD1a5vGh6MOYCVEGP+8zMVYIdPVz9EopoKvJGULGXTlyoND9BOJw3eJ6LCxQIDAQAB";
 
 	// 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String notify_url = prefix_url+"BF2/order/alipayreturn.action";
+	public static String notify_url = prefix_url+"order/ali_notify.action";
 
 	// 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String return_url = prefix_url+"BF2/user.html";
+	public static String return_url = prefix_url+"pay.html";
 
 	// 签名方式
 	public static String sign_type = "RSA2";
@@ -43,7 +43,7 @@ public class AlipayConfig {
 	
 	// 日志位置
 //	public static String log_path = "C:\\";
-	public static String log_path = "D:\\MyFoodProject\\test\\alilog";
+	public static String log_path = "/home/tmt/log/ssh/alipay/";
 
 
 //↑↑↑↑↑↑↑↑↑↑请在这里配置您的基本信息↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑

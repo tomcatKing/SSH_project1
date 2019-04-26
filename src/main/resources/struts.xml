@@ -3,10 +3,10 @@
         "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
         "http://struts.apache.org/dtds/struts-2.5.dtd">
 <struts>
-	<!-- 禁止使用动态方法调用 -->
+	<!-- 开启使用动态方法调用 -->
 	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
 	<!-- 测试模式 -->
-	<constant name="struts.devMode" value="true" />
+	<constant name="struts.devMode" value="false" />
 	<!-- 设置文件上传的大小为5M以内 -->
 	<constant name="struts.multipart.maxSize" value="5242880"/>
 	

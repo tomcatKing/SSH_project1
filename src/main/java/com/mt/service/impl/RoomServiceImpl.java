@@ -18,14 +18,17 @@ import com.mt.dao.IUserDao;
 import com.mt.pojo.Order;
 import com.mt.pojo.OrderItem;
 import com.mt.pojo.Room;
-import com.mt.vo.RoomVo;
 import com.mt.pojo.User;
 import com.mt.result.JsonResult;
 import com.mt.service.IRoomService;
 import com.mt.util.Page;
+import com.mt.vo.RoomVo;
+
+import lombok.extern.log4j.Log4j;
 
 @Service
 @Transactional
+@Log4j
 public class RoomServiceImpl implements IRoomService{
 	@Autowired
 	private IRoomDao iRoomDao;
@@ -42,6 +45,7 @@ public class RoomServiceImpl implements IRoomService{
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED)
 	public JsonResult selectRoom(Integer userId, Integer roomId) {
+		log.info("选择房间的服务启动了,userId->:"+userId+",roomId->:"+roomId);
 		if(userId==null || roomId==null) {
 			return JsonResult.errorMsg("传入参数错误");
 		}
@@ -73,6 +77,7 @@ public class RoomServiceImpl implements IRoomService{
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED)
 	public JsonResult removeRoom(Integer userId) {
+		log.info("取消房间的服务启动了,userId->:"+userId);
 		if(userId==null) {
 			return JsonResult.errorMsg("传入参数错误");
 		}
@@ -111,6 +116,7 @@ public class RoomServiceImpl implements IRoomService{
 	@Override
 	@Transactional(readOnly=true)
 	public JsonResult Rooms(int pageNum, int pageSize) {
+		log.info("查看房间的服务启动了");
 		Page p=new Page();
 		p.setCurrentPage(pageNum);
 		p.setPageRows(pageSize);
@@ -132,6 +138,7 @@ public class RoomServiceImpl implements IRoomService{
 	@Override
 	@Transactional(readOnly=true)
 	public JsonResult RoomVo(Integer userId) {
+		log.info("查看房间的详细信息的服务启动了,userId->:"+userId);
 		//1.获取用户
 		User user=iUserDao.getUserById(userId);
 		if(user==null) {

@@ -5,16 +5,17 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.mt.common.Const;
-import com.mt.pojo.Cart;
 import com.mt.pojo.User;
 import com.mt.result.JsonResult;
 import com.mt.service.ICartService;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
 @Controller
 @Scope("prototype")
+@Log4j
 public class CartController extends SuperAction{
 
 	private static final long serialVersionUID = 1L;
@@ -49,6 +50,7 @@ public class CartController extends SuperAction{
 		User cur_user=(User)user;
 		//用户id
 		Integer userId=cur_user.getUserId();
+		log.info("获取指定用户的购物车清单的action启动了,传入参数userId->"+userId);
 		jsonResult=iCartService.list(userId,pageNum,pageSize);
 		
 		return SUCCESS;
@@ -59,6 +61,7 @@ public class CartController extends SuperAction{
 		Object user=session.getAttribute(Const.CURRENT_USER);
 		User cur_user=(User)user;
 		Integer userId=cur_user.getUserId();
+		log.info("添加购物车的action启动了,传入参数userId->"+userId+",foodId->"+foodId+",foodNum->"+foodNum);
 		jsonResult=iCartService.add(userId,foodId,foodNum);
 		return SUCCESS;
 	}
@@ -68,6 +71,7 @@ public class CartController extends SuperAction{
 		Object user=session.getAttribute(Const.CURRENT_USER);
 		User cur_ser=(User)user;
 		Integer userId=cur_ser.getUserId();
+		log.info("取消购物车的action启动了,传入参数userId->"+userId+",cartId->"+cartId);
 		jsonResult=iCartService.remove(userId,cartId);
 		return SUCCESS;
 	}
@@ -75,7 +79,9 @@ public class CartController extends SuperAction{
 	/**修改购物车中商品的数量,包括选择状态*/
 	public String update() {
 		User user=(User)session.getAttribute(Const.CURRENT_USER);
-		jsonResult=iCartService.update(user.getUserId(),cartId,foodNum);
+		Integer userId=user.getUserId();
+		log.info("修改购物车的action启动了,传入参数userId->"+userId+",cartId->"+cartId+",foodNum->"+foodNum);
+		jsonResult=iCartService.update(userId,cartId,foodNum);
 		return SUCCESS;
 	}
 	

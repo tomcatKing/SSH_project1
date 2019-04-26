@@ -13,10 +13,12 @@ import com.mt.service.IFoodService;
 import com.mt.util.Page;
 import com.mt.vo.FoodVo;
 
+import lombok.extern.log4j.Log4j;
+
 @Service
 @Transactional
+@Log4j
 public class FoodServiceImpl implements IFoodService {
-	
 	@Autowired
 	private IFoodDao iFoodDao;
 	
@@ -24,6 +26,7 @@ public class FoodServiceImpl implements IFoodService {
 	@Transactional(readOnly=true)
 	/**获取所有美食的方法,允许传入排序字段和关键字段  提醒以下:如果参数不存在,则直接传入null就可以了*/
 	public JsonResult list(int pageNum, int pageSize, String orderBy, String keyword,String foodTypes) {
+		log.info("获取所有美食的服务启动了");
 		Page p=new Page();
 		p.setCurrentPage(pageNum);
 		p.setPageRows(pageSize);
@@ -82,6 +85,7 @@ public class FoodServiceImpl implements IFoodService {
 	@Override
 	@Transactional(readOnly=true)
 	public JsonResult detail(Integer foodId) {
+		log.info("获取美食详情的服务启动了!!");
 		FoodVo foodVo=iFoodDao.detail(foodId);
 		return JsonResult.ok(foodVo);
 	}

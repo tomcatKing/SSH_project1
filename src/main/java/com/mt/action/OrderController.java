@@ -14,9 +14,11 @@ import com.mt.service.IOrderService;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
 @Controller
 @Scope("prototype")
+@Log4j
 public class OrderController extends SuperAction{
 	private static final long serialVersionUID = 3814369782310130150L;
 	@Autowired
@@ -41,6 +43,7 @@ public class OrderController extends SuperAction{
 	public String orderDetail() {
 		User user=(User)session.getAttribute(Const.CURRENT_USER);
 		Integer userId=user.getUserId();
+		log.info("获取订单详情的action启动了,userId->"+userId+",oredrNo-->"+orderNo);
 		jsonResult=iOrderService.detail(userId, orderNo);
 		return SUCCESS;
 	}
@@ -49,6 +52,7 @@ public class OrderController extends SuperAction{
 	public String orderStatus() {
 		User user=(User)session.getAttribute(Const.CURRENT_USER);
 		Integer userId=user.getUserId();
+		log.info("获取订单状态的action启动了,userId->"+userId+",oredrNo-->"+orderNo);
 		jsonResult=iOrderService.status(userId, orderNo);
 		return SUCCESS;
 	}
@@ -57,6 +61,7 @@ public class OrderController extends SuperAction{
 	public String createOrder() {
 		User user=(User)session.getAttribute(Const.CURRENT_USER);
 		Integer userId=user.getUserId();
+		log.info("创建订单的action启动了,userId->"+userId);
 		jsonResult=iOrderService.createOrder(userId);
 		return SUCCESS;
 	}
@@ -65,6 +70,7 @@ public class OrderController extends SuperAction{
 	public String cancel() {
 		User user=(User)session.getAttribute(Const.CURRENT_USER);
 		Integer userId=user.getUserId();
+		log.info("取消订单的action启动了,传入参数userId->"+userId+",orderNo->"+orderNo);
 		jsonResult=iOrderService.cancelOrder(userId, orderNo);
 		return SUCCESS;
 	}
@@ -73,6 +79,7 @@ public class OrderController extends SuperAction{
 	public String list() {
 		User user=(User)session.getAttribute(Const.CURRENT_USER);
 		Integer userId=user.getUserId();
+		log.info("获取所有订单的action启动了,传入userId->"+userId);
 		jsonResult=iOrderService.list(userId,pageNum,pageSize);
 		return SUCCESS;
 	}
@@ -80,7 +87,9 @@ public class OrderController extends SuperAction{
 	/**支付订单*/
 	public String pay() {
 		User user=(User)session.getAttribute(Const.CURRENT_USER);
-		jsonResult=iOrderService.pay(user.getUserId(), orderNo);
+		Integer userId=user.getUserId();
+		log.info("支付订单的action启动了,传入参数userId->"+userId+",orderNo->"+orderNo);
+		jsonResult=iOrderService.pay(userId, orderNo);
 		return SUCCESS;
 	}
 	
@@ -88,6 +97,7 @@ public class OrderController extends SuperAction{
 	 * @throws AlipayApiException 
 	 * @throws UnsupportedEncodingException */
 	public String ali_notify() throws UnsupportedEncodingException, AlipayApiException {
+		log.info("支付宝异步回调的action启动了");
 		jsonResult=iOrderService.alipay_notify_back(request);
 		return SUCCESS;
 	}
@@ -96,12 +106,14 @@ public class OrderController extends SuperAction{
 	 * @throws AlipayApiException 
 	 * @throws UnsupportedEncodingException */
 	public String ali_returnfy() throws UnsupportedEncodingException, AlipayApiException {
+		log.info("支付宝同步回调的action启动了");
 		jsonResult=iOrderService.alipay_return_back(request);
 		return SUCCESS;
 	}
 	
 	/**显示未支付订单*/
 	public String nopay() {
+		log.info("获取未支付订单的action启动了");
 		User user=(User)session.getAttribute(Const.CURRENT_USER);
 		jsonResult=iOrderService.nopay(user.getUserId(), pageNum, pageSize);
 		return SUCCESS;
@@ -109,6 +121,7 @@ public class OrderController extends SuperAction{
 	
 	/**显示已支付订单*/
 	public String ispay() {
+		log.info("获取已支付订单的action启动了");
 		User user=(User)session.getAttribute(Const.CURRENT_USER);
 		jsonResult=iOrderService.inpay(user.getUserId(), pageNum, pageSize);
 		return SUCCESS;
@@ -116,6 +129,7 @@ public class OrderController extends SuperAction{
 	
 	/**显示已完成订单*/
 	public String success() {
+		log.info("获取所有已经完成的订单的action启动了");
 		User user=(User)session.getAttribute(Const.CURRENT_USER);
 		jsonResult=iOrderService.success(user.getUserId(), pageNum, pageSize);
 		return SUCCESS;

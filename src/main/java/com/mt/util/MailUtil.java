@@ -49,7 +49,8 @@ public class MailUtil {
 			log.info("已发送验证码:["+codeValue+"],到邮箱:["+toMail+"]");
 			String returnMsg=email.send();
 			if(StringUtils.isBlank(returnMsg)) {
-				log.error("发送验证码失败");
+				log.info("发送验证码失败");
+				return null;
 			}
 			else {
 				//邮件发送成功后存入到guava中
@@ -57,7 +58,7 @@ public class MailUtil {
 			}
 			return codeValue;
 		}catch(EmailException e) {
-			log.error("服务器发送邮件出现异常了:",e);
+			log.info("服务器发送邮件出现异常了:",e);
 			return null;
 		}
 	}

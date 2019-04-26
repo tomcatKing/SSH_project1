@@ -9,9 +9,11 @@ import com.mt.service.IFoodService;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
 @Controller
 @Scope("prototype")
+@Log4j
 public class FoodController extends SuperAction{
 	private static final long serialVersionUID = 1L;
 	
@@ -53,12 +55,14 @@ public class FoodController extends SuperAction{
 		if(foodTypes==null || foodTypes.trim()=="") {
 			foodTypes=null;
 		}
+		log.info("获取美食列表的action启动了");
 		jsonResult=iFoodService.list(pageNum, pageSize, orderBy, keyword,foodTypes);
 		return SUCCESS;
 	}
 	
 	/**通过美食id获取美食详情*/
 	public String detail() {
+		log.info("获取订单详情的action启动了,传入参数:foodId->"+foodId);
 		if(foodId==null || foodId<=0) {
 			jsonResult=JsonResult.errorMsg();
 		}else {

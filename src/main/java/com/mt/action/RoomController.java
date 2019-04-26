@@ -11,9 +11,11 @@ import com.mt.service.IRoomService;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
 @Controller
 @Scope("prototype")
+@Log4j
 public class RoomController extends SuperAction{
 	
 	private static final long serialVersionUID = 1L;
@@ -38,12 +40,14 @@ public class RoomController extends SuperAction{
 	
 	/**获取所有的房间列表*/
 	public String list() {
+		log.info("获取所有的房间列表的action启动了");
 		jsonResult=iRoomService.Rooms(pageNum, pageSize);
 		return SUCCESS;
 	}
 	
 	/**添加房间*/
 	public String add() {
+		log.info("添加房间action启动了,传入参数roomId->:"+roomId);
 		User user=(User)session.getAttribute(Const.CURRENT_USER);
 		if(user==null) {
 			jsonResult=JsonResult.errorMsg("请登录后再进行操作!!");
@@ -55,6 +59,7 @@ public class RoomController extends SuperAction{
 	
 	/**取消房间(这里要删除用户在这个房间的所有未支付的订单)*/
 	public String cancel() {
+		log.info("取消房间的action启动了");
 		User user=(User)session.getAttribute(Const.CURRENT_USER);
 		if(user==null) {
 			jsonResult=JsonResult.errorMsg("请登录后再进行操作!!");
@@ -66,6 +71,7 @@ public class RoomController extends SuperAction{
 	
 	/**获取当前用户的房间信息,包括已支付订单*/
 	public String roomVo() {
+		log.info("获取当前用户的房间信息的action启动了");
 		User user=(User)session.getAttribute(Const.CURRENT_USER);
 		if(user==null) {
 			jsonResult=JsonResult.errorMsg("请登录后再进行操作!!");

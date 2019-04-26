@@ -44,8 +44,11 @@ import com.mt.util.Page;
 import com.mt.vo.OrderItemVo;
 import com.mt.vo.OrderVo;
 import com.mt.vo.RoomVo;
+
+import lombok.extern.log4j.Log4j;
 @Service
 @Transactional
+@Log4j
 public class OrderServiceImpl implements IOrderService {
 	@Autowired
 	private ICartDao iCartDao;
@@ -69,6 +72,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Transactional(propagation=Propagation.REQUIRED)
 	/**创建订单*/
 	public JsonResult createOrder(Integer userId) {
+		log.info("生成订单的服务启动了,userId->:"+userId);
 		User user=iUserDao.getUserById(userId);
 		Room room=user.getRoomId();
 		if(room==null) {
@@ -180,6 +184,7 @@ public class OrderServiceImpl implements IOrderService {
 	/**取消订单*/
 	@Transactional(propagation=Propagation.REQUIRED)
 	public JsonResult cancelOrder(Integer userId, Long orderNo) {
+		log.info("取消订单的服务启动了,userId->:"+userId+",orderNo->:"+orderNo);
 		if(userId==null || orderNo==null || userId<1 || orderNo<1) {
 			return JsonResult.errorMsg("传入参数错误!!");
 		}
@@ -199,6 +204,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	@Transactional(readOnly=true)
 	public JsonResult pay(Integer userId, Long orderNo) {
+		log.info("支付订单的服务启动了,userId->:"+userId+",orderNo->:"+orderNo);
 		if(userId==null || orderNo==null || userId<1 || orderNo<1) {
 			return JsonResult.errorMsg("传入参数错误!!");
 		}
@@ -218,6 +224,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED)
 	public JsonResult detail(Integer userId,Long orderNo) {
+		log.info("订单详情的服务启动了,userId->:"+userId+",orderNo->:"+orderNo);
 		if(userId==null || orderNo==null || userId<1 || orderNo<1) {
 			return JsonResult.errorMsg("传入参数错误!!");
 		}
@@ -243,6 +250,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED)
 	public JsonResult alipay_notify_back(HttpServletRequest request) throws UnsupportedEncodingException, AlipayApiException {
+		log.info("支付宝异步回调了");
 		//获取支付宝POST过来反馈信息
 		Map<String,String> params =Maps.newHashMap();
 		Map<String,String[]> requestParams = request.getParameterMap();
@@ -320,6 +328,7 @@ public class OrderServiceImpl implements IOrderService {
 
 	@Override
 	public JsonResult alipay_return_back(HttpServletRequest request) throws AlipayApiException, UnsupportedEncodingException {
+		log.info("支付宝同步回调了");
 		Map<String,String> params = Maps.newHashMap();
 		Map<String,String[]> requestParams = request.getParameterMap();
 		for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext();) {
@@ -365,6 +374,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED)
 	public JsonResult list(Integer userId,int pageNum,int pageSize) {
+		log.info("获取订单列表的服务启动了,userId->:"+userId);
 		Page p=new Page();
 		p.setHql("from Order where userId.userId=:userId");
 		p.setCurrentPage(pageNum);
@@ -395,6 +405,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	@Transactional(readOnly=true)
 	public JsonResult nopay(Integer userId, int pageNum, int pageSize) {
+		log.info("获取未支付订单列表的服务启动了,userId->:"+userId);
 		Page page=new Page();
 		page.setCurrentPage(pageNum);
 		page.setPageRows(pageSize);
@@ -426,6 +437,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	@Transactional(readOnly=true)
 	public JsonResult inpay(Integer userId, int pageNum, int pageSize) {
+		log.info("获取已支付订单列表的服务启动了,userId->:"+userId);
 		Page page=new Page();
 		page.setCurrentPage(pageNum);
 		page.setPageRows(pageSize);
@@ -458,6 +470,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	@Transactional(readOnly=true)
 	public JsonResult success(Integer userId, int pageNum, int pageSize) {
+		log.info("获取已完成订单列表的服务启动了,userId->:"+userId);
 		Page page=new Page();
 		page.setCurrentPage(pageNum);
 		page.setPageRows(pageSize);
@@ -489,6 +502,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	@Transactional(readOnly=true)
 	public JsonResult status(Integer userId, Long orderNo) {
+		log.info("获取订单的状态的服务启动了,userId->:"+userId+",orderNo->:"+orderNo);
 		Order order=iOrderDao.getOrderByUserIdAndOrderNo(userId, orderNo);
 		System.out.println(order);
 		if(order==null) {
@@ -503,6 +517,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED)
 	public JsonResult closeOrder() {
+		log.info("关闭未支付订单的服务启动了");
 		List<Order> orderList=iOrderDao.getOrders();
 		Date now=new Date();
 		Long nowTime=now.getTime();

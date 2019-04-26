@@ -3,8 +3,6 @@ package com.mt.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.annotation.PreDestroy;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -12,12 +10,14 @@ import org.springframework.stereotype.Component;
 import com.mt.service.IOrderService;
 import com.mt.util.JedisUtil;
 
+import lombok.extern.log4j.Log4j;
+
 @Component
+@Log4j
 public class OrderTask {
 	@Autowired
 	private IOrderService iOrderService;
 	
-	private int i;
 	//关闭订单的分布式锁的名称
 	private final String CLOSE_ORDER_TASK_LOCK="close_lock";
 	
@@ -36,7 +36,7 @@ public class OrderTask {
 //	@Scheduled(cron="0 0 */1 * * ?") //每小时执行1次关单操作
 	@Scheduled(cron="0 0 */1 * * ?")
 	public void OrderPlayV2() {
-		System.out.println(toDate(new Date())+"tomcat1定时关单["+i+"]执行开始");
+		log.info("关单操作启动了");
 		long lockTimeout=5000; //设置为5秒,实际开发最好设置5秒
 		
 		//设置分布式任务锁,如果这个锁已经存在就会返回0
@@ -70,12 +70,11 @@ public class OrderTask {
 			}
 		}
 		
-		System.out.println(toDate(new Date())+"tomcat1定时关单执行结束");
+		log.info(toDate(new Date())+"tomcat1定时关单执行结束");
 	}
 	
 	private void closeOrder(String lockName) {
 		JedisUtil.expire(lockName, 50); //有效期为50秒,防止死锁
-		i++;
 		//获取锁
 		Long keycode=Long.parseLong(JedisUtil.get(lockName));
 		iOrderService.closeOrder();
